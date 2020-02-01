@@ -2,7 +2,7 @@
 
 ```
 
-$ git clone https://github.com/michaellavelle/yolo-v2-spring-demo.git
+$ git clone https://github.com/ml4j/yolo-v2-spring-demo.git
 $ mvn spring-boot:run
 
 ```
