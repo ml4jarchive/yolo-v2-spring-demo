@@ -1,3 +1,16 @@
+/*
+ * Copyright 2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.ml4j.nn.demos.yolov2;
 
 import java.awt.image.BufferedImage;
@@ -14,6 +27,7 @@ import org.ml4j.MatrixFactory;
 import org.ml4j.images.Image;
 import org.ml4j.nn.FeedForwardNeuralNetworkContext;
 import org.ml4j.nn.ForwardPropagation;
+import org.ml4j.nn.components.onetoone.DefaultChainableDirectedComponentAdapter;
 import org.ml4j.nn.datasets.BatchedLabeledDataSet;
 import org.ml4j.nn.datasets.DataBatch;
 import org.ml4j.nn.datasets.FeatureExtractionErrorMode;
@@ -42,15 +56,17 @@ import org.springframework.context.ApplicationContext;
 
 import com.codepoetics.protonpack.StreamUtils;
 
+/**
+ * @author Michael Lavelle
+ */
 @SpringBootApplication
 public class YOLOv2Demo implements CommandLineRunner {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(YOLOv2Demo.class);
 
 	// Set the thresholds for displaying bounding boxes ( SCORE_THRESHOLD) and to determine overlap constraints ( IOU_THRESHOLD ).
-	private final static float SCORE_THRESHOLD = 0.5f;
-	
-	private final static float IOU_THRESHOLD = 0.5f;
+	private final static float SCORE_THRESHOLD = 0.4f;
+	private final static float IOU_THRESHOLD = 0.6f;
 	
 	private final static int BATCH_SIZE = 1;
 	
@@ -126,7 +142,7 @@ public class YOLOv2Demo implements CommandLineRunner {
 								yoloV2ClassificationNames, SCORE_THRESHOLD, IOU_THRESHOLD)));
 						
 			// Create a blocking queue to store our predictions as they are produced.
-			BlockingQueue<LabeledData<BufferedImage, List<BoundingBox>>> displayQueue = new ArrayBlockingQueue<>(10);
+			BlockingQueue<LabeledData<BufferedImage, List<BoundingBox>>> displayQueue = new ArrayBlockingQueue<>(20);
 			
 			// Set up polling on the queue to display each buffered image as the prediction is added to the queue..
 			QueueUtils.startPollingQueue(displayQueue, (e -> 
@@ -134,6 +150,8 @@ public class YOLOv2Demo implements CommandLineRunner {
 			
 			// When a prediction is produced, add to the queue.
 			predictionsWithBoundingBoxes.forEach(p -> displayQueue.add(p));
+			
+			DefaultChainableDirectedComponentAdapter.printTimes();
 
 		} 
 	}
