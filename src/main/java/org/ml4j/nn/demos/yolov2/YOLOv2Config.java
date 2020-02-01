@@ -1,3 +1,16 @@
+/*
+ * Copyright 2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.ml4j.nn.demos.yolov2;
 
 import java.awt.image.BufferedImage;
@@ -7,13 +20,14 @@ import java.nio.file.Path;
 import java.util.function.Supplier;
 
 import org.ml4j.MatrixFactory;
-import org.ml4j.jblas.JBlasRowMajorMatrixFactory;
+import org.ml4j.jblas.JBlasRowMajorMatrixFactoryOptimised;
 import org.ml4j.nn.activationfunctions.ActivationFunctionBaseType;
 import org.ml4j.nn.activationfunctions.ActivationFunctionProperties;
 import org.ml4j.nn.activationfunctions.ActivationFunctionType;
 import org.ml4j.nn.activationfunctions.factories.DifferentiableActivationFunctionFactory;
 import org.ml4j.nn.axons.factories.AxonsFactory;
 import org.ml4j.nn.components.factories.DirectedComponentFactory;
+import org.ml4j.nn.components.factories.DirectedComponentFactoryAdapter;
 import org.ml4j.nn.datasets.images.DirectoryImagesWithBufferedImagesDataSet;
 import org.ml4j.nn.datasets.images.LabeledImagesDataSet;
 import org.ml4j.nn.factories.DefaultAxonsFactoryImpl;
@@ -31,12 +45,15 @@ import org.ml4j.nn.supervised.SupervisedFeedForwardNeuralNetworkFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Michael Lavelle
+ */
 @Configuration
 public class YOLOv2Config {
 
 	@Bean
 	MatrixFactory matrixFactory() {
-		return new JBlasRowMajorMatrixFactory();
+		return new JBlasRowMajorMatrixFactoryOptimised();
 	}
 
 	@Bean
@@ -46,7 +63,15 @@ public class YOLOv2Config {
 	
 	@Bean
 	DirectedComponentFactory directedComponentFactory() {
-		return new DefaultDirectedComponentFactoryImpl(matrixFactory(), axonsFactory(), activationFunctionFactory());
+		
+		
+		DefaultDirectedComponentFactoryImpl factory = new DefaultDirectedComponentFactoryImpl(matrixFactory(), axonsFactory(), activationFunctionFactory());
+		
+		DirectedComponentFactoryAdapter adapter = new DirectedComponentFactoryAdapter(factory);
+		factory.setDirectedComponentFactory(adapter);
+		
+		return adapter;
+
 	}
 
 	@Bean

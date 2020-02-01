@@ -45,7 +45,7 @@ public class YoloImageDisplay extends ImageDisplay<Long> implements AutoCloseabl
 			drawOneChannel(imageData, this, originalImage.getWidth(), originalImage.getHeight(), Arrays.asList(),
 					Arrays.asList());
 
-			Thread.sleep(1000);
+			Thread.sleep(500);
 
 			drawOneChannel(imageData, this, originalImage.getWidth(), originalImage.getHeight(),
 					boundingBoxes.stream()
@@ -55,7 +55,7 @@ public class YoloImageDisplay extends ImageDisplay<Long> implements AutoCloseabl
 							.collect(Collectors.toList())
 					);
 
-			Thread.sleep(1000);
+			Thread.sleep(500);
 
 		} catch (FeatureExtractionException e) {
 			throw new RuntimeException(e);
