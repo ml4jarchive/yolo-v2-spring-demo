@@ -3,6 +3,7 @@
 ```
 
 $ git clone https://github.com/ml4j/yolo-v2-spring-demo.git
+$ cd yolo-v2-spring-demo
 $ mvn spring-boot:run
 
 ```
