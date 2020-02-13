@@ -76,7 +76,7 @@ public class YOLOv2Config {
 
 	@Bean
 	DefaultSessionFactory sessionFactory() {
-		return new DefaultSessionFactoryImpl(matrixFactory(), directedComponentFactory());
+		return new DefaultSessionFactoryImpl(matrixFactory(), directedComponentFactory(), null, supervisedFeedForwardNeuralNetworkFactory());
 	}
 
 	@Bean
