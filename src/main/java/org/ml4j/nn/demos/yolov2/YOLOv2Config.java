@@ -76,6 +76,7 @@ public class YOLOv2Config {
 
 	@Bean
 	DefaultSessionFactory sessionFactory() {
+		// We don't require a DirectedLayerFactory for this demo - set null in constructor
 		return new DefaultSessionFactoryImpl(matrixFactory(), directedComponentFactory(), null, supervisedFeedForwardNeuralNetworkFactory(), null);
 	}
 
