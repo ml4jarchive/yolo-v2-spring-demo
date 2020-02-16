@@ -104,8 +104,7 @@ public class YOLOv2Config {
 	
 	@Bean
 	YOLOv2Factory yoloV2Factory() throws IOException {
-		return new DefaultYOLOv2Factory(sessionFactory(), matrixFactory(), 
-				supervisedFeedForwardNeuralNetworkFactory(), YOLOv2Demo.class.getClassLoader());
+		return new DefaultYOLOv2Factory(sessionFactory(), matrixFactory(), YOLOv2Demo.class.getClassLoader());
 	}
 	
 	@Bean
