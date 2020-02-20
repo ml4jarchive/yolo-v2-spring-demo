@@ -27,6 +27,7 @@ import org.ml4j.MatrixFactory;
 import org.ml4j.images.Image;
 import org.ml4j.nn.FeedForwardNeuralNetworkContext;
 import org.ml4j.nn.ForwardPropagation;
+import org.ml4j.nn.components.DirectedComponentsContext;
 import org.ml4j.nn.components.onetoone.DefaultChainableDirectedComponentAdapter;
 import org.ml4j.nn.datasets.BatchedLabeledDataSet;
 import org.ml4j.nn.datasets.DataBatch;
@@ -89,6 +90,9 @@ public class YOLOv2Demo implements CommandLineRunner {
 	
 	@Autowired
 	private LabeledImagesDataSet<Supplier<BufferedImage>> dataSet;
+	
+	@Autowired
+	private DirectedComponentsContext directedComponentsContext;
 
 	public static void main(String[] args) throws Exception {
 
@@ -111,7 +115,7 @@ public class YOLOv2Demo implements CommandLineRunner {
 			LOGGER.info("Creating the YOLO v2 network and loading weights...");
 			
 			// Create a runtime (non-training) context for the Yolo V2 Network
-			FeedForwardNeuralNetworkContext predictionContext = new FeedForwardNeuralNetworkContextImpl(matrixFactory, false);
+			FeedForwardNeuralNetworkContext predictionContext = new FeedForwardNeuralNetworkContextImpl(directedComponentsContext, false);
 
 			// Create the YOLO v2 Network, configuring the prediction context
 			SupervisedFeedForwardNeuralNetwork yoloV2Network = yoloV2Factory.createYoloV2(predictionContext);
