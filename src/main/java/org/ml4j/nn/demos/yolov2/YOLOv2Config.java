@@ -26,6 +26,8 @@ import org.ml4j.nn.activationfunctions.ActivationFunctionProperties;
 import org.ml4j.nn.activationfunctions.ActivationFunctionType;
 import org.ml4j.nn.activationfunctions.factories.DifferentiableActivationFunctionFactory;
 import org.ml4j.nn.axons.factories.AxonsFactory;
+import org.ml4j.nn.components.DirectedComponentsContext;
+import org.ml4j.nn.components.DirectedComponentsContextImpl;
 import org.ml4j.nn.components.factories.DirectedComponentFactory;
 import org.ml4j.nn.components.factories.DirectedComponentFactoryAdapter;
 import org.ml4j.nn.datasets.images.DirectoryImagesWithBufferedImagesDataSet;
@@ -65,13 +67,19 @@ public class YOLOv2Config {
 	DirectedComponentFactory directedComponentFactory() {
 		
 		
-		DefaultDirectedComponentFactoryImpl factory = new DefaultDirectedComponentFactoryImpl(matrixFactory(), axonsFactory(), activationFunctionFactory());
+		DefaultDirectedComponentFactoryImpl factory = new DefaultDirectedComponentFactoryImpl(matrixFactory(), axonsFactory(), 
+				activationFunctionFactory(), directedComponentsContext());
 		
 		DirectedComponentFactoryAdapter adapter = new DirectedComponentFactoryAdapter(factory);
 		factory.setDirectedComponentFactory(adapter);
 		
 		return adapter;
 
+	}
+	
+	@Bean
+	DirectedComponentsContext directedComponentsContext() {
+		return new DirectedComponentsContextImpl(matrixFactory(), false);
 	}
 
 	@Bean
